@@ -334,7 +334,11 @@
                     $(this).find(TABLE_CELL_SEL).css('height', getTableHeight($(this)) + 'px');
                 }
 
-                $(this).css('height', windowsHeight + 'px');
+                //adjust section height
+                if ($.isNumeric($(this).attr('data-height-ratio')))
+                    $(this).css('height', parseFloat($(this).attr('data-height-ratio')) * windowsHeight + 'px'); //apply ratio
+                else
+                    $(this).css('height', windowsHeight + 'px');
 
                 //resizing the scrolling divs
                 if(options.scrollOverflow){
@@ -429,7 +433,10 @@
                 $(this).addClass(ACTIVE);
             }
 
-            $(this).css('height', windowsHeight + 'px');
+            if ($.isNumeric($(this).attr('data-height-ratio')))
+                $(this).css('height', parseFloat($(this).attr('data-height-ratio')) * windowsHeight + 'px'); //apply ratio
+            else
+                $(this).css('height', windowsHeight + 'px');
 
             if(options.paddingTop){
                 $(this).css('padding-top', options.paddingTop);
@@ -1694,6 +1701,10 @@
                 var paddings = parseInt(section.css('padding-top')) + parseInt(section.css('padding-bottom'));
                 sectionHeight = (windowsHeight - paddings);
             }
+
+            //override height with ratio
+            if ($.isNumeric($(element).attr('data-height-ratio')))
+               return parseFloat($(element).attr('data-height-ratio')) * sectionHeight;
 
             return sectionHeight;
         }
